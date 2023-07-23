@@ -16,7 +16,8 @@ enum DrawBridgeDirections
     DrawBridgeDirections_SIZE
 };
 
-const double CHANCE_TO_CONTINUE_DRAW_BRIDGE = 0.5;
+const double START_CHANCE_TO_DRAW_BRIDGE = 0.9;
+const double DECREMENT_CHANCE = 0.1;
 
 BoardBuilder::BoardBuilder()
 {
@@ -143,7 +144,9 @@ bool BoardBuilder::drawBridge(int dir, Island island)
     cur_y += step_y;
     next_y += step_y;
 
-    auto prob_to_continue_dist = std::bernoulli_distribution(CHANCE_TO_CONTINUE_DRAW_BRIDGE);
+    int cur_size = 2;
+
+    auto prob_to_continue_dist = std::bernoulli_distribution(START_CHANCE_TO_DRAW_BRIDGE);
 
     while (availableToBuild(next_x, next_y) && prob_to_continue_dist(m_re))
     {
@@ -153,6 +156,14 @@ bool BoardBuilder::drawBridge(int dir, Island island)
         next_x += step_x;
         cur_y += step_y;
         next_y += step_y;
+        cur_size++;
+
+        auto new_chance = START_CHANCE_TO_DRAW_BRIDGE - (double)cur_size * DECREMENT_CHANCE;
+        if (new_chance < 0.0)
+        {
+            new_chance = 0.0;
+        }
+        prob_to_continue_dist = std::bernoulli_distribution(new_chance);
     }
 
     m_matrix[cur_x][cur_y] += bridge_size;
