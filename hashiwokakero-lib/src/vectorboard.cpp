@@ -14,8 +14,17 @@ int VectorBoard::height() const
 
 bool VectorBoard::solved() const
 {
-    throw std::runtime_error("unimplemented");
-    return false;
+    for (auto island : m_islands)
+    {
+        if (island.bridgesRemaining != 0)
+        {
+            return false;
+        }
+    }
+
+    // TODO! Check that all islands reachable from any location
+
+    return true;
 }
 
 bool VectorBoard::tryBuildBridge(Island one, Island another)
