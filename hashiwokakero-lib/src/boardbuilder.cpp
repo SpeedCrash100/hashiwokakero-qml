@@ -71,7 +71,12 @@ std::shared_ptr<Board> BoardBuilder::build(int steps)
         auto island = pickRandomIsland();
         auto select_dir = std::uniform_int_distribution<int>(0, DrawBridgeDirections_SIZE - 1);
         auto dir = select_dir(m_re);
-        drawBridge(dir, island);
+        while (!drawBridge(dir, island))
+        {
+            island = pickRandomIsland();
+            select_dir = std::uniform_int_distribution<int>(0, DrawBridgeDirections_SIZE - 1);
+            dir = select_dir(m_re);
+        };
     }
 
     // Prepare islands vector
