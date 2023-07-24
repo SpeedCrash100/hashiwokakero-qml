@@ -3,22 +3,12 @@
 #include <utility>
 
 #include "island.hpp"
+#include "boardposition.hpp"
 
 struct Bridge
 {
-    Island first;
-    Island second;
+    BoardPosition first;
+    BoardPosition second;
 
     bool operator==(const Bridge &right) const;
 };
-
-// class Bridge
-// {
-// private:
-//     std::pair<Island, Island> m_pair;
-
-// public:
-//     std::pair<Island, Island> islands() const;
-
-//     bool operator==(const Bridge &right) const;
-// };

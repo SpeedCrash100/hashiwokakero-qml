@@ -5,6 +5,7 @@ set(LIB_SOURCES
     src/bridge.cpp
     src/board.cpp
     src/boardbuilder.cpp
+    src/boardposition.cpp
     src/vectorboard.cpp
 )
 

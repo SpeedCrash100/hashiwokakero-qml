@@ -61,10 +61,12 @@ std::shared_ptr<Board> BoardBuilder::build(int steps)
     std::default_random_engine re(rd());
     auto width_dist = std::uniform_int_distribution<int>(0, m_width - 1);
     auto height_dist = std::uniform_int_distribution<int>(0, m_height - 1);
-    auto start_width = width_dist(re);
-    auto start_height = height_dist(re);
+    auto start_position = BoardPosition{
+        .x = width_dist(re),
+        .y = height_dist(re),
+    };
 
-    auto start_island = Island(start_width, start_height);
+    auto start_island = Island(start_position);
     m_islands.push_back(start_island);
 
     for (int i = 0; i < steps; i++)
@@ -90,7 +92,7 @@ std::shared_ptr<Board> BoardBuilder::build(int steps)
     // Prepare islands vector
     for (auto &island : m_islands)
     {
-        auto bridge_req = m_matrix[island.x][island.y];
+        auto bridge_req = m_matrix[island.position.x][island.position.y];
         island.bridgeRequired = bridge_req;
         island.bridgesRemaining = bridge_req;
     }
@@ -139,10 +141,10 @@ bool BoardBuilder::drawBridge(int dir, Island island)
         break;
     }
 
-    int cur_x = island.x;
+    int cur_x = island.position.x;
     int next_x = cur_x + step_x;
 
-    int cur_y = island.y;
+    int cur_y = island.position.y;
     int next_y = cur_y + step_y;
 
     // We need to go at least one step: we will place loop to 1 island
@@ -180,7 +182,10 @@ bool BoardBuilder::drawBridge(int dir, Island island)
     }
 
     m_matrix[cur_x][cur_y] += bridge_size;
-    Island new_island = Island(cur_x, cur_y);
+    Island new_island = Island(BoardPosition{
+        .x = cur_x,
+        .y = cur_y,
+    });
     m_islands.push_back(new_island);
 
     return true;

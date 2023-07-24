@@ -1,13 +1,15 @@
 #pragma once
 
+#include "boardposition.hpp"
+
 struct Island
 {
-    int x;
-    int y;
+    BoardPosition position;
+
     int bridgeRequired;
     int bridgesRemaining;
 
-    Island(int x, int y);
+    Island(BoardPosition position);
 
     bool operator==(const Island &island) const;
 };
