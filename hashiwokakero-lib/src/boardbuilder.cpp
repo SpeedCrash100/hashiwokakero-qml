@@ -18,6 +18,7 @@ enum DrawBridgeDirections
 
 const double START_CHANCE_TO_DRAW_BRIDGE = 0.9;
 const double DECREMENT_CHANCE = 0.1;
+const int MAX_RETRY_TO_DRAW_BRIDGE = 100;
 
 BoardBuilder::BoardBuilder()
 {
@@ -71,12 +72,19 @@ std::shared_ptr<Board> BoardBuilder::build(int steps)
         auto island = pickRandomIsland();
         auto select_dir = std::uniform_int_distribution<int>(0, DrawBridgeDirections_SIZE - 1);
         auto dir = select_dir(m_re);
-        while (!drawBridge(dir, island))
+
+        int retry_count = MAX_RETRY_TO_DRAW_BRIDGE;
+        while (!drawBridge(dir, island) && retry_count-- > 0)
         {
             island = pickRandomIsland();
             select_dir = std::uniform_int_distribution<int>(0, DrawBridgeDirections_SIZE - 1);
             dir = select_dir(m_re);
         };
+
+        if (retry_count <= 0)
+        {
+            throw std::runtime_error("cannot draw bridge. may be too many steps specified");
+        }
     }
 
     // Prepare islands vector

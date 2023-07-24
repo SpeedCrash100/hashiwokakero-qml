@@ -38,3 +38,12 @@ TEST(HashiwokakeroLibGeneration, AllIslandHaveBridgeReqInRange)
         ASSERT_LE(island.bridgeRequired, 4 * MAX_BRIDGE_SIZE);
     }
 }
+
+TEST(HashiwokakeroLibGeneration, TooManySteps)
+{
+    BoardBuilder builder;
+    builder.setWidth(10);
+    builder.setHeight(10);
+
+    EXPECT_THROW(builder.build(100), std::runtime_error);
+}
