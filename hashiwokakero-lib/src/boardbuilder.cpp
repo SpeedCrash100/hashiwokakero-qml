@@ -61,10 +61,7 @@ std::shared_ptr<Board> BoardBuilder::build(int steps)
     std::default_random_engine re(rd());
     auto width_dist = std::uniform_int_distribution<int>(0, m_width - 1);
     auto height_dist = std::uniform_int_distribution<int>(0, m_height - 1);
-    auto start_position = BoardPosition{
-        .x = width_dist(re),
-        .y = height_dist(re),
-    };
+    auto start_position = BoardPosition(width_dist(re), height_dist(re));
 
     auto start_island = Island(start_position);
     m_islands.push_back(start_island);
@@ -182,10 +179,7 @@ bool BoardBuilder::drawBridge(int dir, Island island)
     }
 
     m_matrix[cur_x][cur_y] += bridge_size;
-    Island new_island = Island(BoardPosition{
-        .x = cur_x,
-        .y = cur_y,
-    });
+    Island new_island = Island(BoardPosition(cur_x, cur_y));
     m_islands.push_back(new_island);
 
     return true;

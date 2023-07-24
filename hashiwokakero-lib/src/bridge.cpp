@@ -1,5 +1,9 @@
 #include "bridge.hpp"
 
+Bridge::Bridge(BoardPosition pos1, BoardPosition pos2) : first(pos1), second(pos2), size(1)
+{
+}
+
 bool Bridge::operator==(const Bridge &right) const
 {
     auto left = *this;

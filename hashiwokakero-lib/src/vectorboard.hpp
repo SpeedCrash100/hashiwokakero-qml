@@ -1,6 +1,9 @@
 #pragma once
 
 #include <vector>
+#include <optional>
+#include <functional>
+
 #include "board.hpp"
 #include "bridge.hpp"
 #include "island.hpp"
@@ -24,4 +27,16 @@ public:
 
     std::vector<Bridge> bridges() override;
     std::vector<Island> islands() override;
+
+private:
+    std::optional<Bridge> getBridgeBetween(BoardPosition pos1, BoardPosition pos2) const;
+
+    bool createBridge(BoardPosition pos1, BoardPosition pos2);
+    void upgradeBridge(Bridge bridge);
+    void deleteBridge(Bridge bridge);
+
+    void applyToLine(BoardPosition pos1, BoardPosition pos2, std::function<int(int)> fun);
+    bool checkForObstacles(BoardPosition pos1, BoardPosition pos2);
+
+    void updateRequirements(BoardPosition pos);
 };

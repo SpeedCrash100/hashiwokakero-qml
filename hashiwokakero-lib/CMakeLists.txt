@@ -10,6 +10,7 @@ set(LIB_SOURCES
 )
 
 add_library(hashiwokakero-lib STATIC ${LIB_SOURCES})
+target_compile_features(hashiwokakero-lib PUBLIC cxx_std_17)
 target_include_directories(hashiwokakero-lib PUBLIC 
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
     $<INSTALL_INTERFACE:include/>)
@@ -17,6 +18,7 @@ target_include_directories(hashiwokakero-lib PUBLIC
 
 set(TEST_SOURCES
     test/generate.cpp
+    test/buildBridges.cpp
 )
 
 add_executable(
