@@ -1,8 +1,9 @@
 #pragma once
 
-#include <QObject>
 #include <memory.h>
 #include <qqml.h>
+
+#include <QObject>
 
 #include "hashiwokakero.hpp"
 
@@ -19,8 +20,8 @@ class BoardLogic : public QObject {
 
   Q_PROPERTY(QVariant islands READ islands NOTIFY islandsChanged FINAL)
 
-public:
-  explicit BoardLogic(QObject *parent = nullptr);
+ public:
+  explicit BoardLogic(QObject* parent = nullptr);
 
   int columnsCount() const;
   void setColumnsCount(int columns);
@@ -35,13 +36,13 @@ public:
 
   Q_INVOKABLE void generateBoard();
 
-signals:
+ signals:
   void columnCountChanged(int columns);
   void rowsCountChanged(int rows);
   void stepCountChanged(int steps);
   void islandsChanged(QVariant islands);
 
-private:
+ private:
   int m_nCols;
   int m_nRows;
   int m_steps;

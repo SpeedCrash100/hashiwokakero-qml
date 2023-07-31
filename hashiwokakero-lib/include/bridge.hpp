@@ -2,17 +2,16 @@
 
 #include <utility>
 
-#include "island.hpp"
 #include "boardposition.hpp"
+#include "island.hpp"
 
-struct Bridge
-{
-    BoardPosition first;
-    BoardPosition second;
+struct Bridge {
+  BoardPosition first;
+  BoardPosition second;
 
-    int size;
+  int size;
 
-    Bridge(BoardPosition pos1, BoardPosition pos2);
+  Bridge(BoardPosition pos1, BoardPosition pos2);
 
-    bool operator==(const Bridge &right) const;
+  bool operator==(const Bridge& right) const;
 };

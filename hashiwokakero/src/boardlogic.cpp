@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <format>
 
-BoardLogic::BoardLogic(QObject *parent) : m_nCols(7), m_nRows(7), m_steps(7) {
+BoardLogic::BoardLogic(QObject* parent) : m_nCols(7), m_nRows(7), m_steps(7) {
   generateBoard();
 }
 
@@ -44,7 +44,7 @@ QVariant BoardLogic::islands() const {
   transformed_islands.resize(islands.size());
 
   std::transform(islands.begin(), islands.end(), transformed_islands.begin(),
-                 [](const Island &island) {
+                 [](const Island& island) {
                    QMap<QString, QVariant> obj{
                        {"r", island.position.x},
                        {"c", island.position.y},
