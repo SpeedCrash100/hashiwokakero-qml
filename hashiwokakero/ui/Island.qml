@@ -9,6 +9,8 @@ Rectangle {
     border.color: "grey"
 
     required property int req;
+    required property int r;
+    required property int c;
 
     Text {
         id: textValue
