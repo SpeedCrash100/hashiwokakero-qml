@@ -46,8 +46,8 @@ QVariant BoardLogic::islands() const {
   std::transform(islands.begin(), islands.end(), transformed_islands.begin(),
                  [](const Island& island) {
                    QMap<QString, QVariant> obj{
-                       {"r", island.position.x},
-                       {"c", island.position.y},
+                       {"r", island.position.y},
+                       {"c", island.position.x},
                        {"req", island.bridgeRequired},
                    };
 

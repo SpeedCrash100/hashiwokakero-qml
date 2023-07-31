@@ -15,10 +15,14 @@ class Board {
  public:
   /// @brief gets width of the board
   /// @return width of the board
+  ///
+  /// Correspond to x-axis in board or columns.
   virtual int width() const = 0;
 
   /// @brief gets height of the board
   /// @return height of the board
+  ///
+  /// Correspond to y-axis in board or rows.
   virtual int height() const = 0;
 
   /// @brief checks if board solved correctly
