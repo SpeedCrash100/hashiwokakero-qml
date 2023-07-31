@@ -61,7 +61,17 @@ void BoardLogic::generateBoard() {
   BoardBuilder builder;
   builder.setHeight(m_nRows);
   builder.setWidth(m_nCols);
-  m_board = builder.build(m_steps);
+
+  int steps = m_steps;
+
+  while (true) {
+    try {
+      m_board = builder.build(steps);
+      break;
+    } catch (const std::runtime_error&) {
+      steps--;
+    }
+  }
 
   emit islandsChanged(islands());
 }
