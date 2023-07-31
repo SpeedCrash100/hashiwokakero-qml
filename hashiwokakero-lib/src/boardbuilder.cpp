@@ -18,6 +18,7 @@ enum DrawBridgeDirections {
 const double START_CHANCE_TO_DRAW_BRIDGE = 0.9;
 const double DECREMENT_CHANCE = 0.1;
 const int MAX_RETRY_TO_DRAW_BRIDGE = 100;
+const int MIN_BOARD_SIZE = 5;
 
 BoardBuilder::BoardBuilder() {
   m_re = std::default_random_engine(m_rd());
@@ -27,14 +28,14 @@ BoardBuilder::BoardBuilder() {
 }
 
 void BoardBuilder::setWidth(int width) {
-  if (width < 3) {
+  if (width < MIN_BOARD_SIZE) {
     throw std::range_error("the width is too small");
   }
   m_width = width;
 }
 
 void BoardBuilder::setHeight(int height) {
-  if (height < 3) {
+  if (height < MIN_BOARD_SIZE) {
     throw std::range_error("the height is too small");
   }
   m_height = height;
@@ -52,8 +53,14 @@ std::shared_ptr<Board> BoardBuilder::build(int steps) {
   // Select random point for first island
   std::random_device rd;
   std::default_random_engine re(rd());
-  auto width_dist = std::uniform_int_distribution<int>(0, m_width - 1);
-  auto height_dist = std::uniform_int_distribution<int>(0, m_height - 1);
+
+  auto center_width = m_width / 2;
+  auto center_height = m_height / 2;
+
+  auto width_dist =
+      std::uniform_int_distribution<int>(center_width - 2, center_width + 2);
+  auto height_dist =
+      std::uniform_int_distribution<int>(center_height - 2, center_height + 2);
   auto start_position = BoardPosition(width_dist(re), height_dist(re));
 
   auto start_island = Island(start_position);
