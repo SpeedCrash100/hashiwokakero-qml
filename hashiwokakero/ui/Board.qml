@@ -54,11 +54,25 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        if (board.selected_row != -1 && board.selected_col != -1) {
-                            logic.buildBridge(board.selected_row, board.selected_col, this_island.r, this_island.c)
+                        // Deselect if clicked on same island
+                        if (r === board.selected_row && c === board.selected_col) {
+                            board.selected_row = -1
+                            board.selected_col = -1
+                            return
+                        }
+
+                        if (board.selected_row !== -1 && board.selected_col !== -1) {
+                            var sel_row = board.selected_row
+                            var sel_col = board.selected_col
+                            board.selected_row = -1
+                            board.selected_col = -1
+
+                            logic.buildBridge(sel_row, sel_col, r, c)
+                            return
                         } 
-                        board.selected_row = this_island.r
-                        board.selected_col = this_island.c
+                        
+                        board.selected_row = r
+                        board.selected_col = c
                         
                     }
                 }
