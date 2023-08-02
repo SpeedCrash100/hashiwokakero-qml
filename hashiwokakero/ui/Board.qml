@@ -43,6 +43,7 @@ Rectangle {
                 r: modelData.r
                 c: modelData.c
                 req: modelData.req
+                rem: modelData.rem
             
 
                 width: cell_height
