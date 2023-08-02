@@ -13,7 +13,7 @@ Rectangle {
     Rectangle {
         id: board
         anchors.centerIn: parent
-        color: "white"
+        color: logic.solved ? "lightgreen" : "white"
         width: parent.height
         height: parent.height
 

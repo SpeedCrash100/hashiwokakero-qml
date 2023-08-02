@@ -20,6 +20,7 @@ class BoardLogic : public QObject {
 
   Q_PROPERTY(QVariant islands READ islands NOTIFY islandsChanged FINAL)
   Q_PROPERTY(QVariant bridges READ bridges NOTIFY bridgesChanged FINAL)
+  Q_PROPERTY(bool solved READ solved NOTIFY solvedChanged FINAL)
 
  public:
   explicit BoardLogic(QObject* parent = nullptr);
@@ -35,6 +36,7 @@ class BoardLogic : public QObject {
 
   QVariant islands() const;
   QVariant bridges() const;
+  bool solved() const;
 
   Q_INVOKABLE void generateBoard();
 
@@ -46,6 +48,7 @@ class BoardLogic : public QObject {
   void stepCountChanged(int steps);
   void islandsChanged(QVariant islands);
   void bridgesChanged(QVariant bridges);
+  void solvedChanged(bool solved);
 
  private:
   int m_nCols;
@@ -53,4 +56,5 @@ class BoardLogic : public QObject {
   int m_steps;
 
   std::shared_ptr<Board> m_board;
+  bool m_solved;
 };

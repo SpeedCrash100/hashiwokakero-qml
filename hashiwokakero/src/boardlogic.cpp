@@ -5,7 +5,8 @@
 #include <format>
 #include <iostream>
 
-BoardLogic::BoardLogic(QObject* parent) : m_nCols(7), m_nRows(7), m_steps(7) {
+BoardLogic::BoardLogic(QObject* parent)
+    : m_nCols(7), m_nRows(7), m_steps(7), m_solved(false), QObject(parent) {
   generateBoard();
 }
 
@@ -86,6 +87,8 @@ QVariant BoardLogic::bridges() const {
   return transformed_bridges;
 }
 
+bool BoardLogic::solved() const { return m_solved; }
+
 void BoardLogic::generateBoard() {
   BoardBuilder builder;
   builder.setHeight(m_nRows);
@@ -111,6 +114,11 @@ Q_INVOKABLE bool BoardLogic::buildBridge(int row1, int column1, int row2,
                                      Island(BoardPosition(row2, column2)));
 
   if (res) {
+    auto new_solved = m_board->solved();
+    if (m_solved != new_solved) {
+      m_solved = new_solved;
+      emit solvedChanged(m_solved);
+    }
     emit islandsChanged(islands());
     emit bridgesChanged(bridges());
     return true;
