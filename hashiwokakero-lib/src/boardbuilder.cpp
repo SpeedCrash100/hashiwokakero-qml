@@ -101,6 +101,8 @@ std::shared_ptr<Board> BoardBuilder::build(int steps) {
   auto& result_matrix = result_board->m_matrix;
   result_matrix = {};
   result_matrix.resize(m_width);
+  std::fill(result_matrix.begin(), result_matrix.end(),
+            std::vector<int>(m_height, 0));
 
   return result_board;
 }
