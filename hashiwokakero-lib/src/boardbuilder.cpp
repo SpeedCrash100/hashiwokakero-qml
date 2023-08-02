@@ -105,7 +105,8 @@ std::shared_ptr<Board> BoardBuilder::build(int steps) {
             std::vector<int>(m_width, 0));
 
   for (auto& island : m_islands) {
-    m_matrix[island.position.row][island.position.col] = island.bridgeRequired;
+    result_matrix[island.position.row][island.position.col] =
+        island.bridgeRequired;
   }
 
   return result_board;
