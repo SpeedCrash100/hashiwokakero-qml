@@ -54,16 +54,12 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        if (board.selected_row != -1 || board.selected_col != -1) {
+                        if (board.selected_row != -1 && board.selected_col != -1) {
                             logic.buildBridge(board.selected_row, board.selected_col, this_island.r, this_island.c)
-
-                            board.selected_row = -1
-                            board.selected_col = -1
-                        } else {
-                            board.selected_row = this_island.r
-                            board.selected_col = this_island.c
-                        }
-
+                        } 
+                        board.selected_row = this_island.r
+                        board.selected_col = this_island.c
+                        
                     }
                 }
             }
