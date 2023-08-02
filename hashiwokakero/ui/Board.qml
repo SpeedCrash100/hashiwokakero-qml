@@ -40,8 +40,6 @@ Rectangle {
 
                 r: modelData.r
                 c: modelData.c
-                x: modelData.c * cell_height
-                y: modelData.r * cell_height
                 req: modelData.req
             
 

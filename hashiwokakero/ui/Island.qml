@@ -12,6 +12,9 @@ Rectangle {
     required property int r;
     required property int c;
 
+    x: c * height
+    y: r * height
+
     Text {
         id: textValue
         text: parseInt(req)
