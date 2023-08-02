@@ -47,8 +47,8 @@ QVariant BoardLogic::islands() const {
   std::transform(islands.begin(), islands.end(), transformed_islands.begin(),
                  [](const Island& island) {
                    QMap<QString, QVariant> obj{
-                       {"r", island.position.y},
-                       {"c", island.position.x},
+                       {"r", island.position.col},
+                       {"c", island.position.row},
                        {"req", island.bridgeRequired},
                    };
 
@@ -66,13 +66,13 @@ QVariant BoardLogic::bridges() const {
   std::transform(bridges.begin(), bridges.end(), transformed_bridges.begin(),
                  [](const Bridge& bridge) {
                    QMap<QString, QVariant> pos1{
-                       {"r", bridge.first.y},
-                       {"c", bridge.first.x},
+                       {"r", bridge.first.col},
+                       {"c", bridge.first.row},
                    };
 
                    QMap<QString, QVariant> pos2{
-                       {"r", bridge.second.y},
-                       {"c", bridge.second.x},
+                       {"r", bridge.second.col},
+                       {"c", bridge.second.row},
                    };
 
                    QMap<QString, QVariant> obj{{"first", pos1},

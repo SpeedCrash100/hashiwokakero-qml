@@ -44,8 +44,8 @@ void BoardBuilder::setHeight(int height) {
 std::shared_ptr<Board> BoardBuilder::build(int steps) {
   // Prepare matrix
   m_matrix = {};
-  m_matrix.resize(m_width);
-  std::fill(m_matrix.begin(), m_matrix.end(), std::vector<int>(m_height, 0));
+  m_matrix.resize(m_height);
+  std::fill(m_matrix.begin(), m_matrix.end(), std::vector<int>(m_width, 0));
   // Prepare islands list
   m_islands = {};
   m_islands.reserve(steps + 1);
@@ -88,7 +88,7 @@ std::shared_ptr<Board> BoardBuilder::build(int steps) {
 
   // Prepare islands vector
   for (auto& island : m_islands) {
-    auto bridge_req = m_matrix[island.position.x][island.position.y];
+    auto bridge_req = m_matrix[island.position.row][island.position.col];
     island.bridgeRequired = bridge_req;
     island.bridgesRemaining = bridge_req;
   }
@@ -100,9 +100,13 @@ std::shared_ptr<Board> BoardBuilder::build(int steps) {
   result_board->m_islands = m_islands;
   auto& result_matrix = result_board->m_matrix;
   result_matrix = {};
-  result_matrix.resize(m_width);
+  result_matrix.resize(m_height);
   std::fill(result_matrix.begin(), result_matrix.end(),
-            std::vector<int>(m_height, 0));
+            std::vector<int>(m_width, 0));
+
+  for (auto& island : m_islands) {
+    m_matrix[island.position.row][island.position.col] = island.bridgeRequired;
+  }
 
   return result_board;
 }
@@ -121,52 +125,52 @@ bool BoardBuilder::drawBridge(int dir, Island island) {
       std::uniform_int_distribution<int>(1, MAX_BRIDGE_SIZE);
   auto bridge_size = bridge_size_dist(m_re);
 
-  int step_x = 0, step_y = 0;
+  int step_row = 0, step_col = 0;
 
   switch (dir) {
     case DrawBridgeDirections::Up:
-      step_y = -1;
+      step_row = -1;
       break;
     case DrawBridgeDirections::Down:
-      step_y = 1;
+      step_row = 1;
       break;
     case DrawBridgeDirections::Left:
-      step_x = -1;
+      step_col = -1;
       break;
     case DrawBridgeDirections::Right:
-      step_x = 1;
+      step_col = 1;
       break;
   }
 
-  int cur_x = island.position.x;
-  int next_x = cur_x + step_x;
+  int cur_row = island.position.row;
+  int next_row = cur_row + step_row;
 
-  int cur_y = island.position.y;
-  int next_y = cur_y + step_y;
+  int cur_col = island.position.col;
+  int next_col = cur_col + step_col;
 
   // We need to go at least one step: we will place loop to 1 island
-  if (!availableToBuild(next_x, next_y)) {
+  if (!availableToBuild(next_row, next_col)) {
     return false;
   }
 
-  m_matrix[cur_x][cur_y] += bridge_size;
-  cur_x += step_x;
-  next_x += step_x;
-  cur_y += step_y;
-  next_y += step_y;
+  m_matrix[cur_row][cur_col] += bridge_size;
+  cur_row += step_row;
+  next_row += step_row;
+  cur_col += step_col;
+  next_col += step_col;
 
   int cur_size = 2;
 
   auto prob_to_continue_dist =
       std::bernoulli_distribution(START_CHANCE_TO_DRAW_BRIDGE);
 
-  while (availableToBuild(next_x, next_y) && prob_to_continue_dist(m_re)) {
-    m_matrix[cur_x][cur_y] += bridge_size;
+  while (availableToBuild(next_row, next_col) && prob_to_continue_dist(m_re)) {
+    m_matrix[cur_row][cur_col] += bridge_size;
 
-    cur_x += step_x;
-    next_x += step_x;
-    cur_y += step_y;
-    next_y += step_y;
+    cur_row += step_row;
+    next_row += step_row;
+    cur_col += step_col;
+    next_col += step_col;
     cur_size++;
 
     auto new_chance =
@@ -177,24 +181,24 @@ bool BoardBuilder::drawBridge(int dir, Island island) {
     prob_to_continue_dist = std::bernoulli_distribution(new_chance);
   }
 
-  m_matrix[cur_x][cur_y] += bridge_size;
-  Island new_island = Island(BoardPosition(cur_x, cur_y));
+  m_matrix[cur_row][cur_col] += bridge_size;
+  Island new_island = Island(BoardPosition(cur_row, cur_col));
   m_islands.push_back(new_island);
 
   return true;
 }
 
-bool BoardBuilder::availableToBuild(int x, int y) {
-  if (x < 0 || y < 0) {
+bool BoardBuilder::availableToBuild(int row, int col) {
+  if (row < 0 || col < 0) {
     return false;
   }
 
-  if (m_width <= x || m_height <= y) {
+  if (m_width <= col || m_height <= row) {
     return false;
   }
 
   // Means there are bridge have been built already or there are island
-  if (m_matrix[x][y] > 0) {
+  if (m_matrix[row][col] > 0) {
     return false;
   }
 

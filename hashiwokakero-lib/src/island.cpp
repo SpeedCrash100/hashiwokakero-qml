@@ -7,7 +7,7 @@ Island::Island(BoardPosition position, int req)
     : position(position), bridgeRequired(req), bridgesRemaining(req) {}
 
 bool Island::connectableWith(const Island& other) const {
-  return (position.x == other.position.x) || (position.y == other.position.y);
+  return (position.row == other.position.row) || (position.col == other.position.col);
 }
 
 bool Island::operator==(const Island& right) const {

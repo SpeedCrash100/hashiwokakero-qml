@@ -106,57 +106,57 @@ void VectorBoard::deleteBridge(Bridge bridge) {
 
 void VectorBoard::applyToLine(BoardPosition pos1, BoardPosition pos2,
                               std::function<int(int)> fun) {
-  int step_x = 0, step_y = 0;
-  if ((pos2.x - pos1.x) != 0) {
-    step_x = (pos2.x - pos1.x) / abs(pos2.x - pos1.x);
+  int step_row = 0, step_col = 0;
+  if ((pos2.row - pos1.row) != 0) {
+    step_row = (pos2.row - pos1.row) / abs(pos2.row - pos1.row);
   }
 
-  if ((pos2.y - pos1.y) != 0) {
-    step_y = (pos2.y - pos1.y) / abs(pos2.y - pos1.y);
+  if ((pos2.col - pos1.col) != 0) {
+    step_col = (pos2.col - pos1.col) / abs(pos2.col - pos1.col);
   }
 
-  if (step_x != 0 && step_y != 0) {
+  if (step_row != 0 && step_col != 0) {
     throw std::runtime_error("pos1 and pos2 must be connectable");
   }
 
-  auto pos_x = pos1.x;
-  auto pos_y = pos1.y;
+  auto pos_row = pos1.row;
+  auto pos_col = pos1.col;
 
-  while (pos_x != pos2.x || pos_y != pos2.y) {
-    m_matrix[pos_x][pos_y] = fun(m_matrix[pos_x][pos_y]);
+  while (pos_row != pos2.row || pos_col != pos2.col) {
+    m_matrix[pos_row][pos_col] = fun(m_matrix[pos_row][pos_col]);
 
-    pos_x += step_x;
-    pos_y += step_y;
+    pos_row += step_row;
+    pos_col += step_col;
   }
 
-  m_matrix[pos_x][pos_y] = fun(m_matrix[pos2.x][pos2.y]);
+  m_matrix[pos_row][pos_col] = fun(m_matrix[pos2.row][pos2.col]);
 }
 
 bool VectorBoard::checkForObstacles(BoardPosition pos1, BoardPosition pos2) {
-  int step_x = 0, step_y = 0;
-  if ((pos2.x - pos1.x) != 0) {
-    step_x = (pos2.x - pos1.x) / abs(pos2.x - pos1.x);
+  int step_row = 0, step_col = 0;
+  if ((pos2.row - pos1.row) != 0) {
+    step_row = (pos2.row - pos1.row) / abs(pos2.row - pos1.row);
   }
 
-  if ((pos2.y - pos1.y) != 0) {
-    step_y = (pos2.y - pos1.y) / abs(pos2.y - pos1.y);
+  if ((pos2.col - pos1.col) != 0) {
+    step_col = (pos2.col - pos1.col) / abs(pos2.col - pos1.col);
   }
 
-  if (step_x != 0 && step_y != 0) {
+  if (step_row != 0 && step_col != 0) {
     throw std::runtime_error("pos1 and pos2 must be connectable");
   }
 
   // Ignore islands
-  auto pos_x = pos1.x + step_x;
-  auto pos_y = pos1.y + step_y;
+  auto pos_row = pos1.row + step_row;
+  auto pos_col = pos1.col + step_col;
 
-  while (pos_x != pos2.x || pos_y != pos2.y) {
-    if (m_matrix[pos_x][pos_y] < 0) {
+  while (pos_row != pos2.row || pos_col != pos2.col) {
+    if (m_matrix[pos_row][pos_col] < 0) {
       return true;
     }
 
-    pos_x += step_x;
-    pos_y += step_y;
+    pos_row += step_row;
+    pos_col += step_col;
   }
 
   return false;
@@ -165,6 +165,6 @@ bool VectorBoard::checkForObstacles(BoardPosition pos1, BoardPosition pos2) {
 void VectorBoard::updateRequirements(BoardPosition pos) {
   if (auto it = std::find(m_islands.begin(), m_islands.end(), Island(pos));
       it != m_islands.end()) {
-    it->bridgesRemaining = m_matrix[it->position.x][it->position.y];
+    it->bridgesRemaining = m_matrix[it->position.row][it->position.col];
   }
 }

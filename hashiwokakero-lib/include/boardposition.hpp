@@ -1,10 +1,10 @@
 #pragma once
 
 struct BoardPosition {
-  int x;
-  int y;
+  int row;
+  int col;
 
-  BoardPosition(int x, int y);
+  BoardPosition(int row, int col);
 
   bool operator==(const BoardPosition& right) const;
 };

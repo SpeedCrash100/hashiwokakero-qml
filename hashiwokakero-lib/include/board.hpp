@@ -16,13 +16,13 @@ class Board {
   /// @brief gets width of the board
   /// @return width of the board
   ///
-  /// Correspond to x-axis in board or columns.
+  /// Correspond to columns in board.
   virtual int width() const = 0;
 
   /// @brief gets height of the board
   /// @return height of the board
   ///
-  /// Correspond to y-axis in board or rows.
+  /// Correspond to rows in board.
   virtual int height() const = 0;
 
   /// @brief checks if board solved correctly
@@ -38,7 +38,7 @@ class Board {
   ///
   /// @warning
   /// Can fail build bridge with false result:
-  ///   * No direct line between island (x_1 != x_2 && y_1 != y_2);
+  ///   * No direct line between island (r_1 != r_2 && c_1 != c_2);
   ///   * Island don't exists;
   ///   * Bridge overlaps with existing one;
   virtual bool tryBuildBridge(Island one, Island another) = 0;
