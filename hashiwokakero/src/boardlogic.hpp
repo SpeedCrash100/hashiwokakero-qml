@@ -19,6 +19,7 @@ class BoardLogic : public QObject {
                  stepCountChanged FINAL)
 
   Q_PROPERTY(QVariant islands READ islands NOTIFY islandsChanged FINAL)
+  Q_PROPERTY(QVariant bridges READ bridges NOTIFY bridgesChanged FINAL)
 
  public:
   explicit BoardLogic(QObject* parent = nullptr);
@@ -33,14 +34,18 @@ class BoardLogic : public QObject {
   void setStepCount(int steps);
 
   QVariant islands() const;
+  QVariant bridges() const;
 
   Q_INVOKABLE void generateBoard();
+
+  Q_INVOKABLE bool buildBridge(int row1, int column1, int row2, int column2);
 
  signals:
   void columnCountChanged(int columns);
   void rowsCountChanged(int rows);
   void stepCountChanged(int steps);
   void islandsChanged(QVariant islands);
+  void bridgesChanged(QVariant bridges);
 
  private:
   int m_nCols;

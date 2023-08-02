@@ -22,6 +22,15 @@ Rectangle {
         selected_col: -1
         selected_row: -1
 
+        ListView {
+            anchors.fill: parent
+            model: logic.bridges
+            delegate: Text {
+                required property var modelData
+                text: "(" + modelData.first.r + "," + modelData.first.c + ") <--> (" + modelData.second.r + "," + modelData.second.c + ") : " + modelData.size
+            }
+        }
+
 
         Repeater {
             model: logic.islands
@@ -44,10 +53,16 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        board.selected_row = this_island.r
-                        board.selected_col = this_island.c
-                        // TODO! Use this information to draw bridge
-                        console.log("Selected: " + this_island.r + " " + this_island.c)
+                        if (board.selected_row != -1 || board.selected_col != -1) {
+                            logic.buildBridge(board.selected_row, board.selected_col, this_island.r, this_island.c)
+
+                            board.selected_row = -1
+                            board.selected_col = -1
+                        } else {
+                            board.selected_row = this_island.r
+                            board.selected_col = this_island.c
+                        }
+
                     }
                 }
             }

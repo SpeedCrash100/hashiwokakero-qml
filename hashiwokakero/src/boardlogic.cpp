@@ -3,6 +3,7 @@
 #include <QMap>
 #include <algorithm>
 #include <format>
+#include <iostream>
 
 BoardLogic::BoardLogic(QObject* parent) : m_nCols(7), m_nRows(7), m_steps(7) {
   generateBoard();
@@ -57,6 +58,33 @@ QVariant BoardLogic::islands() const {
   return transformed_islands;
 }
 
+QVariant BoardLogic::bridges() const {
+  auto bridges = m_board->bridges();
+  auto transformed_bridges = QVariantList();
+  transformed_bridges.resize(bridges.size());
+
+  std::transform(bridges.begin(), bridges.end(), transformed_bridges.begin(),
+                 [](const Bridge& bridge) {
+                   QMap<QString, QVariant> pos1{
+                       {"r", bridge.first.y},
+                       {"c", bridge.first.x},
+                   };
+
+                   QMap<QString, QVariant> pos2{
+                       {"r", bridge.second.y},
+                       {"c", bridge.second.x},
+                   };
+
+                   QMap<QString, QVariant> obj{{"first", pos1},
+                                               {"second", pos2},
+                                               {"size", bridge.size}};
+
+                   return obj;
+                 });
+
+  return transformed_bridges;
+}
+
 void BoardLogic::generateBoard() {
   BoardBuilder builder;
   builder.setHeight(m_nRows);
@@ -74,4 +102,17 @@ void BoardLogic::generateBoard() {
   }
 
   emit islandsChanged(islands());
+}
+
+Q_INVOKABLE bool BoardLogic::buildBridge(int row1, int column1, int row2,
+                                         int column2) {
+  auto res = m_board->tryBuildBridge(Island(BoardPosition(row1, column1)),
+                                     Island(BoardPosition(row2, column2)));
+
+  if (res) {
+    emit islandsChanged(islands());
+    emit bridgesChanged(bridges());
+    return true;
+  }
+  return false;
 }
