@@ -1,6 +1,7 @@
 import QtQuick 2.15
 
 Rectangle {
+    id: board_base
     anchors.fill: parent
 
     color: "lightgrey"
@@ -22,12 +23,13 @@ Rectangle {
         selected_col: -1
         selected_row: -1
 
-        ListView {
-            anchors.fill: parent
+        Repeater {
             model: logic.bridges
-            delegate: Text {
+            delegate: Bridge {
                 required property var modelData
-                text: "(" + modelData.first.r + "," + modelData.first.c + ") <--> (" + modelData.second.r + "," + modelData.second.c + ") : " + modelData.size
+                first: modelData.first
+                second: modelData.second
+                bridge_size: modelData.size
             }
         }
 
@@ -46,7 +48,7 @@ Rectangle {
                 width: cell_height
                 height: cell_height
 
-                color: (modelData.r == board.selected_row && modelData.c == board.selected_col) ? "lightgrey" : "white"
+                color: (modelData.r === board.selected_row && modelData.c === board.selected_col) ? "lightgrey" : "white"
 
                 MouseArea {
                     anchors.fill: parent

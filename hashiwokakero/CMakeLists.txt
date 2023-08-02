@@ -26,6 +26,7 @@ qt_add_qml_module(hashiwokakero
         ui/main.qml
         ui/Board.qml
         ui/Island.qml
+        ui/Bridge.qml
 )
 
 
