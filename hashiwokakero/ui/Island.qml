@@ -13,8 +13,8 @@ Rectangle {
     border.width: height/32
     border.color: (rem < 0) ? "red" : "grey"
 
-    x: c * height
-    y: r * height
+    x: c * height * 2
+    y: r * height * 2
 
     Text {
         id: textValue

@@ -8,7 +8,7 @@ Rectangle {
 
     property int n_rows
     property int n_cols
-    property int cell_height: parent.height/n_rows
+    property int cell_height: parent.height/n_rows/2
 
     Rectangle {
         id: board
