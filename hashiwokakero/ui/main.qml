@@ -20,8 +20,8 @@ Window {
 
     BoardLogic {
         id: logic
-        columnsCount: 30
-        rowsCount: 30
+        columnsCount: 10
+        rowsCount: 10
         stepCount: 20
     }
 
