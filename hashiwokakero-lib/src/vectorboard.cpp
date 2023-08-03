@@ -63,6 +63,15 @@ std::optional<Bridge> VectorBoard::getBridgeBetween(BoardPosition pos1,
   return out;
 }
 
+std::optional<Island> VectorBoard::getIslandAt(BoardPosition pos) const {
+  for (auto island : m_islands) {
+    if (island.position == pos) {
+      return island;
+    }
+  }
+  return std::optional<Island>();
+}
+
 bool VectorBoard::createBridge(BoardPosition pos1, BoardPosition pos2) {
   // ASSUME: there are no bridges constructed between pos1 and pos2
   // We checked it in VectorBoard::tryBuildBridge()
@@ -152,6 +161,10 @@ bool VectorBoard::checkForObstacles(BoardPosition pos1, BoardPosition pos2) {
 
   while (pos_row != pos2.row || pos_col != pos2.col) {
     if (m_matrix[pos_row][pos_col] < 0) {
+      return true;
+    }
+
+    if (getIslandAt(BoardPosition(pos_row, pos_col))) {
       return true;
     }
 

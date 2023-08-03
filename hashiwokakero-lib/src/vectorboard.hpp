@@ -31,6 +31,8 @@ class VectorBoard : public Board {
   std::optional<Bridge> getBridgeBetween(BoardPosition pos1,
                                          BoardPosition pos2) const;
 
+  std::optional<Island> getIslandAt(BoardPosition pos) const;
+
   bool createBridge(BoardPosition pos1, BoardPosition pos2);
   void upgradeBridge(Bridge bridge);
   void deleteBridge(Bridge bridge);
