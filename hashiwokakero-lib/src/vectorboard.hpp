@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <optional>
+#include <set>
 #include <vector>
 
 #include "board.hpp"
@@ -32,6 +33,9 @@ class VectorBoard : public Board {
                                          BoardPosition pos2) const;
 
   std::optional<Island> getIslandAt(BoardPosition pos) const;
+  std::optional<size_t> getIslandID(const Island& island) const;
+
+  std::set<size_t> getNeighbors(const Island& island) const;
 
   bool createBridge(BoardPosition pos1, BoardPosition pos2);
   void upgradeBridge(Bridge bridge);

@@ -14,9 +14,15 @@ bool VectorBoard::solved() const {
     }
   }
 
-  // TODO! Check that all islands reachable from any location
+  std::set<size_t> reachable_islands;
+  reachable_islands.insert(0);  // Start island is always reachable
 
-  return true;
+  for (auto island : m_islands) {
+    auto reachable_here = getNeighbors(island);
+    reachable_islands.insert(reachable_here.begin(), reachable_here.end());
+  }
+
+  return reachable_islands.size() == m_islands.size();
 }
 
 bool VectorBoard::tryBuildBridge(Island one, Island another) {
@@ -70,6 +76,34 @@ std::optional<Island> VectorBoard::getIslandAt(BoardPosition pos) const {
     }
   }
   return std::optional<Island>();
+}
+
+std::optional<size_t> VectorBoard::getIslandID(const Island& island) const {
+  auto it = std::find(m_islands.begin(), m_islands.end(), island);
+  if (it == m_islands.end()) {
+    return std::optional<size_t>();
+  }
+  return std::distance(m_islands.begin(), it);
+}
+
+std::set<size_t> VectorBoard::getNeighbors(const Island& island) const {
+  std::set<size_t> neighbors;
+
+  for (auto bridges : m_bridges) {
+    if (bridges.first == island.position) {
+      auto other_island = getIslandAt(bridges.second);
+      auto other_island_id = getIslandID(other_island.value());
+      neighbors.insert(other_island_id.value());
+    }
+
+    if (bridges.second == island.position) {
+      auto other_island = getIslandAt(bridges.first);
+      auto other_island_id = getIslandID(other_island.value());
+      neighbors.insert(other_island_id.value());
+    }
+  }
+
+  return neighbors;
 }
 
 bool VectorBoard::createBridge(BoardPosition pos1, BoardPosition pos2) {
